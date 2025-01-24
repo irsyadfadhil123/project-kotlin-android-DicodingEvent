@@ -10,13 +10,12 @@ android:layout_margin="8dp">
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <!-- Media -->
     <ImageView
         android:id="@+id/iv_event_img"
         android:layout_width="match_parent"
         android:layout_height="194dp"
         android:scaleType="centerCrop"
-        android:contentDescription="@string/content_description_media"
+        android:contentDescription="apalah"
         android:src="@color/black"
         />
 

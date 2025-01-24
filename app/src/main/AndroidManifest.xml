@@ -15,14 +15,21 @@
         android:theme="@style/Theme.DicodingEvent"
         tools:targetApi="31">
         <activity
-            android:name=".ui.MainActivity"
-            android:exported="true">
+            android:name=".ui.EventDetail"
+            android:exported="false" />
+        <activity
+            android:name=".ui.BottomNavigation"
+            android:exported="true"
+            android:label="@string/title_activity_bottom_navigation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

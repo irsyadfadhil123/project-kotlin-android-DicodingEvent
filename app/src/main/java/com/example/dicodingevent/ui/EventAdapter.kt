@@ -9,7 +9,9 @@ import com.bumptech.glide.Glide
 import com.example.dicodingevent.data.response.ListEventsItem
 import com.example.dicodingevent.databinding.ItemEventBinding
 
-class EventAdapter : ListAdapter<ListEventsItem, EventAdapter.MyViewHolder>(DIFF_CALLBACK){
+class EventAdapter(
+    private val imageType: String
+) : ListAdapter<ListEventsItem, EventAdapter.MyViewHolder>(DIFF_CALLBACK){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventAdapter.MyViewHolder {
         val binding = ItemEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -18,13 +20,17 @@ class EventAdapter : ListAdapter<ListEventsItem, EventAdapter.MyViewHolder>(DIFF
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val event = getItem(position)
-        holder.bind(event)
+        holder.bind(event, imageType)
     }
 
     class MyViewHolder(val binding: ItemEventBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(event: ListEventsItem) {
+        fun bind(event: ListEventsItem, imageType: String) {
+            val imageUrl = when (imageType) {
+                "logo" -> event.imageLogo
+                else -> event.mediaCover
+            }
             Glide.with(binding.ivEventImg.context)
-                .load(event.mediaCover)
+                .load(imageUrl)
                 .into(binding.ivEventImg)
             binding.tvEventTitle.text ="${event.name}"
         }
@@ -48,5 +54,4 @@ class EventAdapter : ListAdapter<ListEventsItem, EventAdapter.MyViewHolder>(DIFF
 
         }
     }
-
 }

@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">DicodingEvent</string>
     <string name="title">Judul Event</string>
+    <string name="title_activity_bottom_navigation">BottomNavigation</string>
+    <string name="title_home">Home</string>
+    <string name="title_upcoming">Upcoming</string>
+    <string name="title_finished">Finished</string>
+    <string name="judul_acara">judul_acara</string>
 </resources>
