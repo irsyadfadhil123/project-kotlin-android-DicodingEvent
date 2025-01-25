@@ -2,7 +2,6 @@ package com.example.dicodingevent.ui.fragment.upcoming
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.dicodingevent.data.response.EventResponse
@@ -22,9 +21,6 @@ class UpcomingViewModel : ViewModel() {
 
     private val _message = MutableLiveData<String>()
     val message: LiveData<String> = _message
-
-    private val _eventId = MutableLiveData<String>()
-    val eventId: LiveData<String> = _eventId
 
     companion object {
         private const val TAG = "UpcomingViewModel"

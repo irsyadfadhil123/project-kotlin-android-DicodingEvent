@@ -1,5 +1,6 @@
 package com.example.dicodingevent.ui
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -29,14 +30,24 @@ class EventAdapter(
                 "logo" -> event.imageLogo
                 else -> event.mediaCover
             }
+
             Glide.with(binding.ivEventImg.context)
                 .load(imageUrl)
                 .into(binding.ivEventImg)
             binding.tvEventTitle.text ="${event.name}"
+
+            itemView.setOnClickListener{
+                val context = itemView.context
+                val intent = Intent(context, EventDetailActivity::class.java).apply {
+                    putExtra("ID", event.id.toString())
+                }
+                context.startActivity(intent)
+            }
         }
     }
 
     companion object {
+
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<EventItem>() {
             override fun areItemsTheSame(
                 oldItem: EventItem,
@@ -51,7 +62,6 @@ class EventAdapter(
             ): Boolean {
                 return oldItem == newItem
             }
-
         }
     }
 }

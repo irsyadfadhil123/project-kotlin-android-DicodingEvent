@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.dicodingevent.data.response.EventItem
@@ -14,8 +15,9 @@ import com.example.dicodingevent.ui.EventAdapter
 class FinishedFragment : Fragment() {
 
     private var _binding: FragmentUnfinishedAndFinishedBinding? = null
-
     private val binding get() = _binding!!
+
+    val finishedViewModel by viewModels<FinishedViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,8 +25,8 @@ class FinishedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        val finishedViewModel =
-            ViewModelProvider(this)[FinishedViewModel::class.java]
+//        val finishedViewModel =
+//            ViewModelProvider(this)[FinishedViewModel::class.java]
 
         _binding = FragmentUnfinishedAndFinishedBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -75,5 +77,4 @@ class FinishedFragment : Fragment() {
             binding.tvMessage.text = message
         }
     }
-
 }
