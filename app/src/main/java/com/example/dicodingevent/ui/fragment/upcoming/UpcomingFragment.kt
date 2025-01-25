@@ -40,6 +40,10 @@ class UpcomingFragment : Fragment() {
             showLoading(it)
         }
 
+        upcomingViewModel.message.observe(viewLifecycleOwner) {
+            showMessage(it)
+        }
+
         return root
     }
 
@@ -56,9 +60,19 @@ class UpcomingFragment : Fragment() {
 
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
-            binding.finishedProgressBar.visibility = View.VISIBLE
+            binding.pbFinished.visibility = View.VISIBLE
+            binding.tvMessage.visibility = View.INVISIBLE
         } else {
-            binding.finishedProgressBar.visibility = View.INVISIBLE
+            binding.pbFinished.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun showMessage(message: String) {
+        if (message.isEmpty()) {
+            binding.tvMessage.visibility = View.INVISIBLE
+        } else {
+            binding.tvMessage.visibility = View.VISIBLE
+            binding.tvMessage.text = message
         }
     }
 }

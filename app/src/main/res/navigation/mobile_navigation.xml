@@ -15,11 +15,11 @@
         android:id="@+id/navigation_upcoming"
         android:name="com.example.dicodingevent.ui.fragment.upcoming.UpcomingFragment"
         android:label="@string/title_upcoming"
-        tools:layout="@layout/fragment_upcoming" />
+        tools:layout="@layout/fragment_unfinished_and_finished" />
 
     <fragment
         android:id="@+id/navigation_finished"
         android:name="com.example.dicodingevent.ui.fragment.finished.FinishedFragment"
         android:label="@string/title_finished"
-        tools:layout="@layout/fragment_finished" />
+        tools:layout="@layout/fragment_unfinished_and_finished" />
 </navigation>

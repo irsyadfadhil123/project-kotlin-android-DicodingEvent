@@ -19,6 +19,9 @@ class FinishedViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    private val _message = MutableLiveData<String>()
+    val message: LiveData<String> = _message
+
     companion object {
         private const val TAG = "FinishedViewModel"
     }
@@ -33,18 +36,23 @@ class FinishedViewModel : ViewModel() {
         client.enqueue(object : Callback<EventResponse> {
             override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
                 _isLoading.value = false
+                _message.value = ""
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
                         _eventItem.value = response.body()?.listEvents
+                    } else {
+                        _message.value = "Sedang tidak ada Event yang selesai"
                     }
                 } else {
+                    _message.value = "Event tidak ditemukan"
                     Log.e(TAG, "onResponse Failure: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<EventResponse>, t: Throwable) {
                 _isLoading.value = false
+                _message.value = "Gagal memuat Event. Cek kembali koneksi anda"
                 Log.e(TAG, "onFailure: ${t.message.toString()}")
             }
         })
