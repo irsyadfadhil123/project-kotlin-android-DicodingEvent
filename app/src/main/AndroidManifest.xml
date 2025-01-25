@@ -15,7 +15,7 @@
         android:theme="@style/Theme.DicodingEvent"
         tools:targetApi="31">
         <activity
-            android:name=".ui.EventDetail"
+            android:name=".ui.EventDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ui.BottomNavigation"
@@ -27,9 +27,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.MainActivity"
-            android:exported="false" />
     </application>
 
 </manifest>

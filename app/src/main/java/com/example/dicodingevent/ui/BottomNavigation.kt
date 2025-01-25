@@ -38,5 +38,13 @@ class BottomNavigation : AppCompatActivity() {
             )
         )
         navView.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.navigation_home -> supportActionBar?.title = "Home"
+                R.id.navigation_upcoming -> supportActionBar?.title = "Upcoming"
+                R.id.navigation_finished -> supportActionBar?.title = "Finished"
+            }
+        }
     }
 }
