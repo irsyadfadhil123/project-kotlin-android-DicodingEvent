@@ -8,12 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.dicodingevent.data.response.EventItem
-import com.example.dicodingevent.databinding.FragmentFinishedBinding
+import com.example.dicodingevent.databinding.FragmentUnfinishedAndFinishedBinding
 import com.example.dicodingevent.ui.EventAdapter
 
 class FinishedFragment : Fragment() {
 
-    private var _binding: FragmentFinishedBinding? = null
+    private var _binding: FragmentUnfinishedAndFinishedBinding? = null
 
     private val binding get() = _binding!!
 
@@ -26,7 +26,7 @@ class FinishedFragment : Fragment() {
         val finishedViewModel =
             ViewModelProvider(this)[FinishedViewModel::class.java]
 
-        _binding = FragmentFinishedBinding.inflate(inflater, container, false)
+        _binding = FragmentUnfinishedAndFinishedBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val layoutManager = GridLayoutManager(requireActivity(), 2)
