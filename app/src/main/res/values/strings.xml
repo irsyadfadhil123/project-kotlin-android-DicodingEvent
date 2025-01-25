@@ -6,4 +6,20 @@
     <string name="title_upcoming">Upcoming</string>
     <string name="title_finished">Finished</string>
     <string name="judul_acara">judul_acara</string>
+    <string name="penyelenggara_acara">penyelenggara_acara</string>
+    <string name="kuota_acara">kuota_acara</string>
+    <string name="deskripsi_acara">deskripsi_acara</string>
+    <string name="kategori_acara">kategori_acara</string>
+    <string name="diselenggarakan_oleh">Diselenggarakan oleh:</string>
+    <string name="sisa_kuota">Sisa Kuota:</string>
+    <string name="deskripsi">Deskripsi:</string>
+    <string name="waktu_mulai_acara">waktu_mulai_acara</string>
+    <string name="mulai">Mulai:</string>
+    <string name="jadwal_pelaksanaan">Jadwal Pelaksanaan:</string>
+    <string name="selesai">Selesai:</string>
+    <string name="waktu_selesai_acara">waktu_selesai_acara</string>
+    <string name="lokasi">Lokasi:</string>
+    <string name="lokasi_acara">lokasi_acara</string>
+    <string name="register">Register</string>
+    <string name="event_image">event_image</string>
 </resources>
