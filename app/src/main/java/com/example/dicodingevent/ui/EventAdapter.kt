@@ -6,12 +6,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.dicodingevent.data.response.ListEventsItem
+import com.example.dicodingevent.data.response.EventItem
 import com.example.dicodingevent.databinding.ItemEventBinding
 
 class EventAdapter(
     private val imageType: String
-) : ListAdapter<ListEventsItem, EventAdapter.MyViewHolder>(DIFF_CALLBACK){
+) : ListAdapter<EventItem, EventAdapter.MyViewHolder>(DIFF_CALLBACK){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventAdapter.MyViewHolder {
         val binding = ItemEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -24,7 +24,7 @@ class EventAdapter(
     }
 
     class MyViewHolder(val binding: ItemEventBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(event: ListEventsItem, imageType: String) {
+        fun bind(event: EventItem, imageType: String) {
             val imageUrl = when (imageType) {
                 "logo" -> event.imageLogo
                 else -> event.mediaCover
@@ -37,17 +37,17 @@ class EventAdapter(
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListEventsItem>() {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<EventItem>() {
             override fun areItemsTheSame(
-                oldItem: ListEventsItem,
-                newItem: ListEventsItem
+                oldItem: EventItem,
+                newItem: EventItem
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: ListEventsItem,
-                newItem: ListEventsItem
+                oldItem: EventItem,
+                newItem: EventItem
             ): Boolean {
                 return oldItem == newItem
             }

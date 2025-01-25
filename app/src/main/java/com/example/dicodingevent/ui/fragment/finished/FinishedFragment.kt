@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.dicodingevent.data.response.ListEventsItem
+import com.example.dicodingevent.data.response.EventItem
 import com.example.dicodingevent.databinding.FragmentFinishedBinding
 import com.example.dicodingevent.ui.EventAdapter
 
@@ -32,7 +32,7 @@ class FinishedFragment : Fragment() {
         val layoutManager = GridLayoutManager(requireActivity(), 2)
         binding.rvEventList.layoutManager = layoutManager
 
-        finishedViewModel.listEventsItem.observe(viewLifecycleOwner) { eventList ->
+        finishedViewModel.eventItem.observe(viewLifecycleOwner) { eventList ->
             setEventData(eventList)
         }
 
@@ -48,7 +48,7 @@ class FinishedFragment : Fragment() {
         _binding = null
     }
 
-    private fun setEventData(eventList: List<ListEventsItem>) {
+    private fun setEventData(eventList: List<EventItem>) {
         val adapter = EventAdapter("logo")
         adapter.submitList(eventList)
         binding.rvEventList.adapter = adapter
