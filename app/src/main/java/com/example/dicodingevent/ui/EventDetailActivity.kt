@@ -63,6 +63,7 @@ class EventDetailActivity : AppCompatActivity() {
     }
 
     private fun setEventData(data: EventItem?) {
+        supportActionBar?.title = data?.name
         Glide.with(this)
             .load(data?.mediaCover)
             .into(binding.ivEventImage)

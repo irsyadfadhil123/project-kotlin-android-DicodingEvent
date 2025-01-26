@@ -28,4 +28,5 @@
     <string name="tv_home_finished">Finished Events</string>
     <string name="tv_home_upcoming">Upcoming Events</string>
     <string name="tv_home_title">Dicoding Event</string>
+    <string name="search_hint">Cari Event</string>
 </resources>

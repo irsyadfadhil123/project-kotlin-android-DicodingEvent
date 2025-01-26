@@ -10,7 +10,7 @@ interface ApiService {
     @GET("events?active=0")
     fun getFinishedEvent(): Call<EventResponse>
 
-    @GET("events?active=1")
+    @GET("events?active=0")
     fun getUpcomingEvent():Call<EventResponse>
 
     @GET("events/{id}")
