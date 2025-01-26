@@ -37,12 +37,26 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginEnd="48dp"
-        android:text="TextView"
+        android:text="@string/error_message"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/rv_event_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_retry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/retry_event"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_message"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

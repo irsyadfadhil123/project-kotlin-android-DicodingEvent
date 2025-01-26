@@ -13,7 +13,7 @@ import com.example.dicodingevent.ui.fragment.finished.FinishedViewModel
 import com.example.dicodingevent.ui.fragment.home.HomeViewModel
 import com.example.dicodingevent.ui.fragment.upcoming.UpcomingViewModel
 
-class BottomNavigation : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBottomNavigationBinding
     private val homeViewModel by viewModels<HomeViewModel>()

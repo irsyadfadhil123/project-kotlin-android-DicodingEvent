@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.dicodingevent.data.response.EventItem
 import com.example.dicodingevent.databinding.FragmentUnfinishedAndFinishedBinding
@@ -17,7 +16,7 @@ class FinishedFragment : Fragment() {
     private var _binding: FragmentUnfinishedAndFinishedBinding? = null
     private val binding get() = _binding!!
 
-    val finishedViewModel by viewModels<FinishedViewModel>()
+    private val finishedViewModel by viewModels<FinishedViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,23 +24,17 @@ class FinishedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-//        val finishedViewModel =
-//            ViewModelProvider(this)[FinishedViewModel::class.java]
-
         _binding = FragmentUnfinishedAndFinishedBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
         val layoutManager = GridLayoutManager(requireActivity(), 2)
         binding.rvEventList.layoutManager = layoutManager
 
         finishedViewModel.eventItem.observe(viewLifecycleOwner) { eventList ->
             setEventData(eventList)
         }
-
-        finishedViewModel.isLoading.observe(viewLifecycleOwner) {
-            showLoading(it)
+        finishedViewModel.state.observe(viewLifecycleOwner) {
+            eventState(it)
         }
-
         finishedViewModel.message.observe(viewLifecycleOwner) {
             showMessage(it)
         }
@@ -60,21 +53,30 @@ class FinishedFragment : Fragment() {
         binding.rvEventList.adapter = adapter
     }
 
-    private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.pbFinished.visibility = View.VISIBLE
-            binding.tvMessage.visibility = View.INVISIBLE
-        } else {
-            binding.pbFinished.visibility = View.INVISIBLE
+    private fun eventState(isLoading: String) {
+        when (isLoading) {
+            "LOADING" -> {
+                binding.rvEventList.visibility = View.GONE
+                binding.pbFinished.visibility = View.VISIBLE
+                binding.tvMessage.visibility = View.GONE
+                binding.btnRetry.visibility = View.GONE
+            }
+            "CONTENT" -> {
+                binding.rvEventList.visibility = View.VISIBLE
+                binding.pbFinished.visibility = View.GONE
+                binding.tvMessage.visibility = View.GONE
+                binding.btnRetry.visibility = View.GONE
+            }
+            else -> {
+                binding.rvEventList.visibility = View.GONE
+                binding.pbFinished.visibility = View.GONE
+                binding.tvMessage.visibility = View.VISIBLE
+                binding.btnRetry.visibility = View.VISIBLE
+            }
         }
     }
 
     private fun showMessage(message: String) {
-        if (message.isEmpty()) {
-            binding.tvMessage.visibility = View.INVISIBLE
-        } else {
-            binding.tvMessage.visibility = View.VISIBLE
-            binding.tvMessage.text = message
-        }
+        binding.tvMessage.text = message
     }
 }

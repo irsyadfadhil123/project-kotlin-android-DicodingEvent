@@ -22,4 +22,10 @@
     <string name="lokasi_acara">lokasi_acara</string>
     <string name="register">Register</string>
     <string name="event_image">event_image</string>
+    <string name="retry_event">Muat ulang</string>
+    <string name="err_message">ellol</string>
+    <string name="error_message">ellol</string>
+    <string name="tv_home_finished">Finished Events</string>
+    <string name="tv_home_upcoming">Upcoming Events</string>
+    <string name="tv_home_title">Dicoding Event</string>
 </resources>

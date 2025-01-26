@@ -1,7 +1,11 @@
 package com.example.dicodingevent.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
+import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
@@ -22,6 +26,9 @@ class EventDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        onBackPressedDispatcher.addCallback(this) {
+            finish()
+        }
 
         val eventId = intent.getStringExtra("ID")?.toInt()
         if (eventId != null) {
@@ -32,12 +39,26 @@ class EventDetailActivity : AppCompatActivity() {
             setEventData(it)
         }
 
-        eventDetailViewModel.isLoading.observe(this) {
-            showLoading(it)
+        eventDetailViewModel.state.observe(this) {
+            eventState(it)
         }
 
         eventDetailViewModel.message.observe(this) {
             showMessage(it)
+        }
+
+        binding.btnRetryEventDetail.setOnClickListener {
+            eventDetailViewModel.retryDetailEvent()
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -48,6 +69,7 @@ class EventDetailActivity : AppCompatActivity() {
         binding.tvEventCategory.text = data?.category
         binding.tvEventName.text = data?.name
         binding.tvEventOwner.text = data?.ownerName
+        binding.tvEventQuota.text = data?.quota.toString()
         binding.tvEventDescription.text = HtmlCompat.fromHtml(
             data?.description.toString(),
             HtmlCompat.FROM_HTML_MODE_LEGACY
@@ -55,24 +77,37 @@ class EventDetailActivity : AppCompatActivity() {
         binding.tvEventBeginTime.text = data?.beginTime
         binding.tvEventEndTime.text = data?.endTime
         binding.tvEventCityName.text = data?.cityName
+        binding.btnRegister.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(data?.link)
+            startActivity(intent)
+        }
     }
 
-    private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.pbDetailLoading.visibility = View.VISIBLE
-            binding.tvDetailMessage.visibility = View.INVISIBLE
-        } else {
-            binding.pbDetailLoading.visibility = View.INVISIBLE
+    private fun eventState(isLoading: String) {
+        when (isLoading) {
+            "LOADING" -> {
+                binding.slEventDetail.visibility = View.GONE
+                binding.pbDetailLoading.visibility = View.VISIBLE
+                binding.tvDetailMessage.visibility = View.GONE
+                binding.btnRetryEventDetail.visibility = View.GONE
+            }
+            "CONTENT" -> {
+                binding.slEventDetail.visibility = View.VISIBLE
+                binding.pbDetailLoading.visibility = View.GONE
+                binding.tvDetailMessage.visibility = View.GONE
+                binding.btnRetryEventDetail.visibility = View.GONE
+            }
+            else -> {
+                binding.slEventDetail.visibility = View.GONE
+                binding.pbDetailLoading.visibility = View.GONE
+                binding.tvDetailMessage.visibility = View.VISIBLE
+                binding.btnRetryEventDetail.visibility = View.VISIBLE
+            }
         }
     }
 
     private fun showMessage(message: String) {
-        if (message.isEmpty()) {
-            binding.tvDetailMessage.visibility = View.INVISIBLE
-        } else {
-            binding.tvDetailMessage.visibility = View.VISIBLE
-            binding.tvDetailMessage.text = message
-        }
+        binding.tvDetailMessage.text = message
     }
-
 }

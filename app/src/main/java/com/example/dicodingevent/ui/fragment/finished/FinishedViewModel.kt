@@ -16,8 +16,8 @@ class FinishedViewModel : ViewModel() {
     private val _eventItem = MutableLiveData<List<EventItem>>()
     val eventItem: LiveData<List<EventItem>> = _eventItem
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
+    private val _state = MutableLiveData<String>()
+    val state: LiveData<String> = _state
 
     private val _message = MutableLiveData<String>()
     val message: LiveData<String> = _message
@@ -31,27 +31,28 @@ class FinishedViewModel : ViewModel() {
     }
 
     private fun finishedEvents() {
-        _isLoading.value = true
+        _state.value = "LOADING"
         val client = ApiConfig.getApiService().getFinishedEvent()
         client.enqueue(object : Callback<EventResponse> {
             override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
-                _isLoading.value = false
-                _message.value = ""
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
+                        _state.value = "CONTENT"
                         _eventItem.value = response.body()?.listEvents
                     } else {
+                        _state.value = "MESSAGE"
                         _message.value = "Sedang tidak ada Event yang selesai"
                     }
                 } else {
+                    _state.value = "MESSAGE"
                     _message.value = "Event tidak ditemukan"
                     Log.e(TAG, "onResponse Failure: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<EventResponse>, t: Throwable) {
-                _isLoading.value = false
+                _state.value = "MESSAGE"
                 _message.value = "Gagal memuat Event. Cek kembali koneksi anda"
                 Log.e(TAG, "onFailure: ${t.message.toString()}")
             }
