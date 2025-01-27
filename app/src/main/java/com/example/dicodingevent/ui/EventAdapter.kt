@@ -14,7 +14,7 @@ class EventAdapter(
     private val imageType: String
 ) : ListAdapter<EventItem, EventAdapter.MyViewHolder>(DIFF_CALLBACK){
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventAdapter.MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = ItemEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding)
     }
@@ -24,7 +24,7 @@ class EventAdapter(
         holder.bind(event, imageType)
     }
 
-    class MyViewHolder(val binding: ItemEventBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MyViewHolder(private val binding: ItemEventBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(event: EventItem, imageType: String) {
             val imageUrl = when (imageType) {
                 "logo" -> event.imageLogo

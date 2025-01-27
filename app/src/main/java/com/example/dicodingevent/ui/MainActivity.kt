@@ -1,7 +1,6 @@
 package com.example.dicodingevent.ui
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -9,16 +8,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.dicodingevent.R
 import com.example.dicodingevent.databinding.ActivityBottomNavigationBinding
-import com.example.dicodingevent.ui.fragment.finished.FinishedViewModel
-import com.example.dicodingevent.ui.fragment.home.HomeViewModel
-import com.example.dicodingevent.ui.fragment.upcoming.UpcomingViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBottomNavigationBinding
-    private val homeViewModel by viewModels<HomeViewModel>()
-    private val upcomingViewModel by viewModels<UpcomingViewModel>()
-    private val finishedViewModel by viewModels<FinishedViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_bottom_navigation)
-        val appBarConfiguration = AppBarConfiguration(
+        AppBarConfiguration(
             setOf(
                 R.id.navigation_home, R.id.navigation_upcoming, R.id.navigation_finished
             )

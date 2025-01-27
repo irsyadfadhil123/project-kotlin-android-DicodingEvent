@@ -1,18 +1,17 @@
-package com.example.dicodingevent.ui.fragment.finished
+package com.example.dicodingevent.ui.fragment.home
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.dicodingevent.data.response.EventResponse
 import com.example.dicodingevent.data.response.EventItem
+import com.example.dicodingevent.data.response.EventResponse
 import com.example.dicodingevent.data.retrofit.ApiConfig
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FinishedViewModel : ViewModel() {
-
+class HomeSearchViewModel : ViewModel() {
     private val _eventItem = MutableLiveData<List<EventItem>>()
     val eventItem: LiveData<List<EventItem>> = _eventItem
 
@@ -23,30 +22,28 @@ class FinishedViewModel : ViewModel() {
     val message: LiveData<String> = _message
 
     companion object {
-        private const val TAG = "FinishedViewModel"
+        private const val TAG = "UpcomingViewModel"
     }
 
-    init {
-        finishedEvents()
-    }
+//    init {
+//        upcomingEvents()
+//    }
 
-    fun retryFinishedEvents() {
-        finishedEvents()
-    }
-
-    private fun finishedEvents() {
+    fun homeSearchEvents(q: String) {
         _state.value = "LOADING"
-        val client = ApiConfig.getApiService().getEvents("0", "40", "")
+        val client = ApiConfig.getApiService().getEvents("-1", "40", q)
         client.enqueue(object : Callback<EventResponse> {
             override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
-                        _state.value = "CONTENT"
-                        _eventItem.value = response.body()?.listEvents
-                    } else {
-                        _state.value = "MESSAGE"
-                        _message.value = "Sedang tidak ada Event yang selesai"
+                        if (response.body()?.listEvents.isNullOrEmpty()) {
+                            _state.value = "MESSAGE"
+                            _message.value = "Event tidak ditemukan"
+                        } else {
+                            _state.value = "CONTENT"
+                            _eventItem.value = response.body()?.listEvents
+                        }
                     }
                 } else {
                     _state.value = "MESSAGE"
@@ -62,4 +59,5 @@ class FinishedViewModel : ViewModel() {
             }
         })
     }
+
 }

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dicodingevent.data.response.EventItem
 import com.example.dicodingevent.databinding.FragmentUnfinishedAndFinishedBinding
@@ -38,6 +37,10 @@ class UpcomingFragment : Fragment() {
         }
         upcomingViewModel.message.observe(viewLifecycleOwner) {
             showMessage(it)
+        }
+
+        binding.btnRetry.setOnClickListener {
+            upcomingViewModel.retryUpcomingEvents()
         }
 
         return root

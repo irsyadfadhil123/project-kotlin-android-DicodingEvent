@@ -39,6 +39,10 @@ class FinishedFragment : Fragment() {
             showMessage(it)
         }
 
+        binding.btnRetry.setOnClickListener {
+            finishedViewModel.retryFinishedEvents()
+        }
+
         return root
     }
 

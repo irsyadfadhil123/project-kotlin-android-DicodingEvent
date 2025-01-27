@@ -1,28 +1,26 @@
 package com.example.dicodingevent.ui.fragment.home
 
 import android.os.Bundle
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dicodingevent.data.response.EventItem
 import com.example.dicodingevent.databinding.FragmentHomeBinding
 import com.example.dicodingevent.ui.EventAdapter
-import com.example.dicodingevent.ui.fragment.finished.FinishedViewModel
-import com.example.dicodingevent.ui.fragment.upcoming.UpcomingViewModel
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     
-    private val homeViewModel by viewModels<HomeViewModel>()
-    private val upcomingViewModel by viewModels<UpcomingViewModel>()
-    private val finishedViewModel by viewModels<FinishedViewModel>()
+    private val homeUpcomingViewModel by viewModels<HomeUpcomingViewModel>()
+    private val homeFinishedViewModel by viewModels<HomeFinishedViewModel>()
+    private val homeSearchViewModel by viewModels<HomeSearchViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,36 +31,67 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val upcomingLayoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
-        val finishedLayoutManager = LinearLayoutManager(requireActivity())
-        binding.rvHomeUpcoming.layoutManager = upcomingLayoutManager
-        binding.rvHomeFinished.layoutManager = finishedLayoutManager
-        binding.rvHomeFinished.isNestedScrollingEnabled = false
-
         with(binding) {
+            val upcomingLayoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+            val finishedLayoutManager = LinearLayoutManager(requireActivity())
+            val searchViewModel = GridLayoutManager(requireActivity(), 2)
+            rvHomeUpcoming.layoutManager = upcomingLayoutManager
+            rvHomeFinished.layoutManager = finishedLayoutManager
+            rvHomeFinished.isNestedScrollingEnabled = false
+            rvHomeSearch.layoutManager = searchViewModel
 
             svHomeEvent.setupWithSearchBar(sbHomeEvent)
+            svHomeEvent.editText.addTextChangedListener(object : android.text.TextWatcher{
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    val query = p0.toString()
+                    homeSearchViewModel.homeSearchEvents(query)
+                }
+
+                override fun afterTextChanged(p0: Editable?) {}
+
+            })
         }
 
-        upcomingViewModel.eventItem.observe(viewLifecycleOwner) { eventList ->
+        homeUpcomingViewModel.eventItem.observe(viewLifecycleOwner) { eventList ->
             setUpcomingEventData(eventList)
         }
-        upcomingViewModel.state.observe(viewLifecycleOwner) {
+        homeUpcomingViewModel.state.observe(viewLifecycleOwner) {
             eventUpcomingState(it)
         }
-        upcomingViewModel.message.observe(viewLifecycleOwner) {
+        homeUpcomingViewModel.message.observe(viewLifecycleOwner) {
             showUpcomingMessage(it)
         }
 
 
-        finishedViewModel.eventItem.observe(viewLifecycleOwner) { eventList ->
+        homeFinishedViewModel.eventItem.observe(viewLifecycleOwner) { eventList ->
             setFinishedEventData(eventList)
         }
-        finishedViewModel.state.observe(viewLifecycleOwner) {
+        homeFinishedViewModel.state.observe(viewLifecycleOwner) {
             eventFinishedState(it)
         }
-        finishedViewModel.message.observe(viewLifecycleOwner) {
+        homeFinishedViewModel.message.observe(viewLifecycleOwner) {
             showFinishedMessage(it)
+        }
+
+
+        homeSearchViewModel.eventItem.observe(viewLifecycleOwner) { eventList ->
+            setSearchEventData(eventList)
+        }
+        homeSearchViewModel.state.observe(viewLifecycleOwner) {
+            eventSearchState(it)
+        }
+        homeSearchViewModel.message.observe(viewLifecycleOwner) {
+            showSearchMessage(it)
+        }
+
+
+        binding.btnHomeUpcomingRetry.setOnClickListener {
+            homeUpcomingViewModel.retryHomeUpcomingEvents()
+        }
+        binding.btnHomeFinishedRetry.setOnClickListener {
+            homeFinishedViewModel.retryHomeFinishedEvents()
         }
 
         return root
@@ -83,6 +112,12 @@ class HomeFragment : Fragment() {
         val finishedAdapter = EventAdapter("cover")
         finishedAdapter.submitList(eventList)
         binding.rvHomeFinished.adapter = finishedAdapter
+    }
+
+    private fun setSearchEventData(eventList: List<EventItem>) {
+        val searchAdapter = EventAdapter("logo")
+        searchAdapter.submitList(eventList)
+        binding.rvHomeSearch.adapter = searchAdapter
     }
 
     private fun eventUpcomingState(isLoading: String) {
@@ -137,5 +172,29 @@ class HomeFragment : Fragment() {
 
     private fun showFinishedMessage(message: String) {
         binding.tvHomeFinishedMessage.text = message
+    }
+
+    private fun eventSearchState(isLoading: String) {
+        when (isLoading) {
+            "LOADING" -> {
+                binding.rvHomeSearch.visibility = View.GONE
+                binding.pbHomeSearch.visibility = View.VISIBLE
+                binding.tvHomeSearchMessage.visibility = View.GONE
+            }
+            "CONTENT" -> {
+                binding.rvHomeSearch.visibility = View.VISIBLE
+                binding.pbHomeSearch.visibility = View.GONE
+                binding.tvHomeSearchMessage.visibility = View.GONE
+            }
+            else -> {
+                binding.rvHomeSearch.visibility = View.GONE
+                binding.pbHomeSearch.visibility = View.GONE
+                binding.tvHomeSearchMessage.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun showSearchMessage(message: String) {
+        binding.tvHomeSearchMessage.text = message
     }
 }

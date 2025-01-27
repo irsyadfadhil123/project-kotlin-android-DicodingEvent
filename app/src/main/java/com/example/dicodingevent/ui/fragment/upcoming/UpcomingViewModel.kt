@@ -30,9 +30,13 @@ class UpcomingViewModel : ViewModel() {
         upcomingEvents()
     }
 
+    fun retryUpcomingEvents() {
+        upcomingEvents()
+    }
+
     private fun upcomingEvents() {
         _state.value = "LOADING"
-        val client = ApiConfig.getApiService().getUpcomingEvent()
+        val client = ApiConfig.getApiService().getEvents("1", "40", "")
         client.enqueue(object : Callback<EventResponse> {
             override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
                 if (response.isSuccessful) {
